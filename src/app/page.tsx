@@ -2,8 +2,8 @@
 
 import * as THREE from "three";
 
-import React, { ComponentProps, use, useRef, useState } from "react";
-import { Canvas, useFrame, ThreeElements, extend } from "@react-three/fiber";
+import React, { ComponentProps, Suspense } from "react";
+import { Canvas, ThreeElements } from "@react-three/fiber";
 import {
   Text3D,
   Center,
@@ -11,6 +11,8 @@ import {
   useGLTF,
   Clone,
   Environment,
+  useProgress,
+  Html,
 } from "@react-three/drei";
 
 const models = {
@@ -36,7 +38,6 @@ useGLTF.preload(models.duck);
 useGLTF.preload(models.cauldron);
 useGLTF.preload(models.witch);
 useGLTF.preload(models.zombie);
-
 
 const minMax = (min: number, max: number) => {
   return max > min ? min : max;
@@ -117,6 +118,10 @@ const WallGroup = () => {
   );
 };
 
+const Loader = () => {
+  const { progress } = useProgress();
+  return <Html center>{progress.toFixed(1)} % loaded</Html>;
+};
 export default function Home() {
   return (
     <main className="flex flex-col items-center justify-between h-[100vh]">
@@ -124,26 +129,28 @@ export default function Home() {
         <p>Use your mouse buttons/scroll to move the scene!</p>
       </div>
       <Canvas camera={{ position: [-1, 6, 16], near: 0.025 }}>
-        <Environment
-          blur={0}
-          files={[
-            "/environment/px.png",
-            "/environment/nx.png",
-            "/environment/py.png",
-            "/environment/ny.png",
-            "/environment/pz.png",
-            "/environment/nz.png",
-          ]}
-          preset={undefined}
-        />
-        <Text />
-        <WallGroup />
-        <WitchModel position={[0, 0, 3]} scale={2} />
-        <CauldronModel position={[0, 0, 5.3]} scale={1.5} />
-        <DuckModel position={[-3, 0, 7]} rotation={[0, 2, 0]} />
-        <DogModel position={[-3, 0, 10]} rotation={[0, 2, 0]} />
-        <BearModel position={[3, 0, 7]} rotation={[0, -2, 0]} />
-        <ZombieModel position={[6, 0, -0.5]} rotation={[0, -0.5, 0]} />
+        <Suspense fallback={<Loader />}>
+          <Environment
+            blur={0}
+            files={[
+              "/environment/px.png",
+              "/environment/nx.png",
+              "/environment/py.png",
+              "/environment/ny.png",
+              "/environment/pz.png",
+              "/environment/nz.png",
+            ]}
+            preset={undefined}
+          />
+          <Text />
+          <WallGroup />
+          <WitchModel position={[0, 0, 3]} scale={2} />
+          <CauldronModel position={[0, 0, 5.3]} scale={1.5} />
+          <DuckModel position={[-3, 0, 7]} rotation={[0, 2, 0]} />
+          <DogModel position={[-3, 0, 10]} rotation={[0, 2, 0]} />
+          <BearModel position={[3, 0, 7]} rotation={[0, -2, 0]} />
+          <ZombieModel position={[6, 0, -0.5]} rotation={[0, -0.5, 0]} />
+        </Suspense>
         <OrbitControls />
       </Canvas>
       <footer className="flex items-center justify-center w-full h-24 border-t">
