@@ -43,9 +43,10 @@ const minMax = (min: number, max: number) => {
   return max > min ? min : max;
 };
 const Text = (props: ThreeElements["mesh"]) => {
-  const scale = minMax(window.innerWidth / 290, 3);
+  const scale = minMax(window.innerWidth * 0.003, 3);
+
   return (
-    <Center top position={[0, 10, -12]}>
+    <Center top position={[scale < 3 ? scale : 0, 10, -12]}>
       <Text3D font={"/chocolate_bar_regular.json"} {...props} scale={scale}>
         Soon to rise portfolio
         <meshNormalMaterial />
@@ -126,7 +127,9 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-between h-[100vh]">
       <div>
-        <p>Use your mouse buttons/scroll to move the scene!</p>
+        <p className="text-center">
+          Use your mouse buttons/scroll to move the scene!
+        </p>
       </div>
       <Canvas camera={{ position: [-1, 6, 16], near: 0.025 }}>
         <Suspense fallback={<Loader />}>
@@ -153,7 +156,7 @@ export default function Home() {
         </Suspense>
         <OrbitControls />
       </Canvas>
-      <footer className="flex items-center justify-center w-full h-24 border-t">
+      <footer className="flex items-center justify-center w-full border-t">
         Contact me on:{" "}
         <a className="ml-3" href={`mailTo:gpeteamd@gmail.com`}>
           gpeteamd@gmail.com
