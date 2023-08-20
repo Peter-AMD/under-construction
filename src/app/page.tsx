@@ -37,10 +37,15 @@ useGLTF.preload(models.cauldron);
 useGLTF.preload(models.witch);
 useGLTF.preload(models.zombie);
 
+
+const minMax = (min: number, max: number) => {
+  return max > min ? min : max;
+};
 const Text = (props: ThreeElements["mesh"]) => {
+  const scale = minMax(window.innerWidth / 290, 3);
   return (
     <Center top position={[0, 10, -12]}>
-      <Text3D font={"/chocolate_bar_regular.json"} {...props} scale={3}>
+      <Text3D font={"/chocolate_bar_regular.json"} {...props} scale={scale}>
         Soon to rise portfolio
         <meshNormalMaterial />
       </Text3D>
