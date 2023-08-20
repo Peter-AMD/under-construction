@@ -157,7 +157,7 @@ export default function Home() {
         <OrbitControls />
       </Canvas>
       <footer className="fixed bottom-0 flex items-center justify-center w-full border-t">
-        Contact me on:{" "}
+        Contact me at:{" "}
         <a className="ml-3" href={`mailTo:gpeteamd@gmail.com`}>
           gpeteamd@gmail.com
         </a>
